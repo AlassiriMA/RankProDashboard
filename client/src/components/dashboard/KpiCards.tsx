@@ -44,7 +44,11 @@ export default function KpiCards() {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
       {cards.map((card, index) => (
-        <Card key={index} className="bg-white dark:bg-gray-800 shadow p-5">
+        <Card 
+          key={index} 
+          className="bg-white dark:bg-gray-800 shadow p-5 transition-all duration-200 hover:shadow-md animate-fadeIn"
+          style={{ animationDelay: `${index * 100}ms` }}
+        >
           <div className="flex justify-between items-center mb-3">
             <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">{card.title}</h3>
             <span className={`flex items-center text-sm font-medium ${
@@ -73,7 +77,7 @@ export default function KpiCards() {
             </span>
           </div>
           <div className="flex items-center">
-            <div className={`flex items-center justify-center h-12 w-12 rounded-md ${card.iconBg} mr-4`}>
+            <div className={`flex items-center justify-center h-12 w-12 rounded-md ${card.iconBg} mr-4 transition-transform duration-200 hover:scale-105`}>
               {card.icon}
             </div>
             <div>
