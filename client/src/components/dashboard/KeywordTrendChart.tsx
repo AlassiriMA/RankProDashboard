@@ -2,17 +2,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useEffect, useRef, useState } from "react";
 import { useTheme } from "@/hooks/use-theme";
+import { Chart, registerables } from 'chart.js';
 
-// Type for Chart.js
-declare global {
-  interface Window {
-    Chart: any;
-  }
-}
+// Register Chart.js components
+Chart.register(...registerables);
 
 export default function KeywordTrendChart() {
   const chartRef = useRef<HTMLCanvasElement>(null);
-  const [chartInstance, setChartInstance] = useState<any>(null);
+  const [chartInstance, setChartInstance] = useState<Chart | null>(null);
   const { theme } = useTheme();
   const [period, setPeriod] = useState<'7d' | '30d' | '90d'>('7d');
 
@@ -33,18 +30,11 @@ export default function KeywordTrendChart() {
   };
 
   useEffect(() => {
-    // Dynamic import of Chart.js
-    const loadChart = async () => {
+    const renderChart = () => {
       if (!chartRef.current) return;
       
       const ctx = chartRef.current.getContext('2d');
       if (!ctx) return;
-      
-      // Import chart.js dynamically
-      if (!window.Chart) {
-        const ChartJS = await import('chart.js/auto');
-        window.Chart = ChartJS;
-      }
       
       // Clean up any existing chart
       if (chartInstance) {
@@ -57,7 +47,7 @@ export default function KeywordTrendChart() {
       gradientFill.addColorStop(1, 'rgba(59, 130, 246, 0)');
 
       // Create chart
-      const newChartInstance = new window.Chart(ctx, {
+      const newChartInstance = new Chart(ctx, {
         type: 'line',
         data: {
           labels: chartData[period].labels,
@@ -127,7 +117,7 @@ export default function KeywordTrendChart() {
       setChartInstance(newChartInstance);
     };
 
-    loadChart();
+    renderChart();
     
     // Cleanup on unmount
     return () => {
