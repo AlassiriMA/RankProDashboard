@@ -28,8 +28,12 @@ jobs:
           # Create a static build directory
           mkdir -p static_build
           
-          # Copy the client code directly
-          cp -r client/* static_build/
+          # Copy essential files without replit dependencies
+          mkdir -p static_build
+          cp -r public/* static_build/
+          
+          # Add .nojekyll file to prevent GitHub Pages from using Jekyll processing
+          touch static_build/.nojekyll
           
           # Create a fully static version of the app
           cat > static_build/index.html << 'EOL'
@@ -672,6 +676,16 @@ jobs:
           baseurl: ""
           url: "https://dashboard.alassiri.nl"
           EOL
+      - name: Copy CSS from public
+        run: |
+          # Ensure the styles from public are properly copied
+          cp -rf public/static/* static_build/static/
+          cp -f public/favicon.* static_build/
+          cp -f public/CNAME static_build/
+          cp -f public/robots.txt static_build/ || true
+          cp -f _config.yml static_build/
+          cp -f .nojekyll static_build/ || true
+          
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:

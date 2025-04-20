@@ -1,3 +1,36 @@
+# Jekyll configuration for GitHub Pages
 baseurl: ""
 url: "https://dashboard.alassiri.nl"
-exclude: [node_modules, server]
+exclude: 
+  - node_modules
+  - server
+  - "*.replit*"
+  - .replit
+  - vite.config.ts
+  - tailwind.config.ts
+  - postcss.config.js
+
+# Specify default layout
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: default
+
+# Permalink structure
+permalink: pretty
+
+# Set to true to show excerpts on the homepage
+show_excerpts: false
+
+# Disable jekyll plugins 
+plugins: []
+
+# Theme settings
+theme: null
+remote_theme: null
+
+# GitHub Pages defaults
+github:
+  is_project_page: false
+  is_user_page: false
