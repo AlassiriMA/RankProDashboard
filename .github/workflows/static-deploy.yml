@@ -20,42 +20,24 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v2
         
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          
       - name: Build static site
         run: |
-          # Create static build directory
-          mkdir -p static_site
+          # Run our custom static build script
+          node build-static.js
           
-          # Copy static files
-          cp -r public/* static_site/
-          
-          # Copy additional files
-          cp .nojekyll static_site/ || touch static_site/.nojekyll
-          cp _config.yml static_site/ || true
-          
-          # Ensure index.html has proper Jekyll frontmatter
-          if [ -f static_site/index.html ]; then
-            # Check if frontmatter exists, if not add it
-            if ! grep -q "^---" static_site/index.html; then
-              cat > static_site/index.html.new << EOL
----
-layout: default
-permalink: /
----
-$(cat static_site/index.html)
-EOL
-              mv static_site/index.html.new static_site/index.html
-            fi
-          fi
-          
-          # Create a simple dashboard.html if it doesn't exist
-          if [ ! -f static_site/dashboard.html ]; then
-            cp static_site/index.html static_site/dashboard.html || true
-          fi
+          # Add some diagnostic information
+          echo "Generated files:"
+          find gh-pages-build -type f | sort
           
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          path: ./static_site
+          path: ./gh-pages-build
 
   deploy:
     environment:

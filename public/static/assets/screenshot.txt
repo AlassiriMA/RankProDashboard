@@ -1,0 +1,2 @@
+This is a placeholder file for the dashboard screenshot. 
+Replace this with an actual screenshot of your RankPro dashboard when deployed.
