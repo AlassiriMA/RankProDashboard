@@ -1,0 +1,3 @@
+baseurl: ""
+url: "https://dashboard.alassiri.nl"
+exclude: [node_modules, server]
